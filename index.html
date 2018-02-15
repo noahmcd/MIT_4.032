@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizing time - Project 1</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1 class="col-md-12"><br>Noah McDaniel</br>4.032: Visualizing Time</h1>
+    </div>
+    <div class="row">
+        <h2 class="col-md-12">Clock 1</h2>
+        <canvas id="plot1"></canvas>
+        <p>This clock is a spirogram, which draws a circle every second and completes a full diagram every minute. The colors are generated from a hex code, converted from the time. Thus, displaying the numerical time is unnecessary if the viewer can decode the colors. This clock represents time as a gradient, flowing around space from color to color.</p>
+    </div>
+    <div class="row">
+        <h2 class="col-md-12">Clock 2</h2>
+        <canvas id="plot2"></canvas>
+        <p>This clock is a strand of DNA. I was thinking about fundamental forms of data storage, and realized that DNA is one of the most essential forms of data in existence. There are 4 bases, which can be used to convert time into a base-4 system, which I then represent as letters in the strand. It takes 3 bases to write an hour, second, or minute. The time reads downward.</p>
+    </div>
+    <div class="row">
+        <h2 class="col-md-12">Clock 3</h2>
+        <canvas id="plot3"></canvas>
+        <p>This is a concept in progress, but I wanted to experiment with gradients and a mor eminimalist design. I decided to forgo a tradional clock face or numbering because time has no absolute reference point. The sharp contrast between the hands and the background represents absoluteness versus infiniteness.</p>
+    </div>
+    <div>
+        <h2>
+            Figure 1
+        </h2>
+        <img src="fig1.jpg" width="1200" height="700">
+        <p>This was the first page I drew, which has a bunch of ideas to work on conceptualizing time. None of these are final designs, however the design at the bottom right ended up become a near-finalized clock, in Clock 3</p>
+    </div>
+    <div>
+        <h2>
+            Figure 2
+        </h2>
+        <img src="fig2.jpg" width="1200" height="700">
+        <p>In the upper left I thought about using the outlines of cities in differnt UTC time zones as the clock face, but this did not come to fruition. In the bottom right I fiddles with translating time into hex codes, to be used as colors. This was incorporated into Clock 1. On the right side of the pasge is the complete design for Clock 2. Included is the plan for translating time into strings of base pairs, as well as concepts for displaying a DNA strand in the window.</p>
+    </div>
+    <div>
+        <h2>
+            Figure 3
+        </h2>
+        <img src="fig3.jpg" width="1200" height="700">
+        <p>On the left side of the frame I toyed with spirographs, which can be drawn using gearings and trigonometry. I combined this idea with the hex colors from Fig. 2 to create Clock 1. On the right side are designs for a fractal tree with branches respresenting minutes, and a yin-yang concept.</p>
+    </div>
+    <div>
+        <h2>
+            Figure 4
+        </h2>
+        <img src="fig4.jpg" width="1200" height="700">
+        <p>I played around more with yin-yang and horoscope-inspired designs, but decided to return to a precious design, at the bottom right, for Clock 3.</p>
+    </div>
+</div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="hexclock.js"></script>
+<script src="dna.js"></script>
+<script src="shadow.js"></script>
+</body>
+</html>
