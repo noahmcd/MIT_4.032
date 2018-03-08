@@ -1,11 +1,41 @@
 <html>
     <head>
-        Weather Visualization
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <h1 align = "center">Project 2: Weather Visualization</h1>
+        <p id="text">Created by Noah McDaniel</p>
+        <h2 >Visualization 1</h2>
+        <div id="vis1">
+            <p id="desc">best outdoor conditions today are <g id="condition"></g> at <g id="time"></g></p>
+            <div id = "plot1"></div>
+        </div>
         <div>
-            <img src="mockup1.PNG">
+            <p id = "text">This visualization displays the PMV index, which measures comfortability as a function of various weather effects. The intent is for users to be able to identify the best and work conditions of the day, so that they can plan their dress and activities accordingly<br><br>I chose this measurmeent scheme because I wanted to experiment with efficent data communication. "Comfort" is a way in which complex data, in this case weather, can be distilled into a simple number or word. While we lose some understanding of the details, the accessibility is enhanced.</p>
+        </div>
+        <h2>Visualization 2</h2>
+        <div id="vis2">
+            <p id="location">Cambridge, next 2 days</p>
+            <div id = "plot2"></div>
+        </div>
+        <p id = "text">This visualization displays each of the subsequent 48 hours as a circle. The radius indicates precipitation, and the color indicates temperature. I decided to omit scales because the visualization is meant to depict weather artistically, and is not intended to be used as an analytic tool.<br><br>This design changed slightly from my plan, as I found the use of space in a matrix layout more visually appeaing. I think it would be fun to compare diagrams such as these between places around the world, to see how they are similar and different.</p>
+        <h2>Mockups</h2>
+        <div align = "center">
+            <img src="mockup1.PNG" >
             <img src="mockup2.PNG">
         </div>
+        
+        <h2>Sketches</h2>
+        <div align = "center">
+            <img src="sketch1.jpg" >
+            <img src="sketch2.jpg">
+        </div>
+        
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="https://d3js.org/d3-color.v1.min.js"></script>
+        <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="weatherapp.js"></script>
     </body>
 </html>

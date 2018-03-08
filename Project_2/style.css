@@ -1,0 +1,92 @@
+h1 {
+    padding: 20px;
+    font-family: 'Arial';
+    font-size: 30px;
+}
+
+h2 {
+    padding-left: 300px;
+    font-family: 'Arial';
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#vis1,#vis2 {
+    width: 414px;
+    height: 736px;
+    border: 1px solid;
+    /*float: left;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom:40px;
+}
+
+#plot1 {
+    background-color: antiquewhite;
+}
+
+#plot2 {
+    background-color: white;
+}
+
+#desc {
+    width: 300px;
+    margin-top: 50;
+    margin-left: 50;
+    margin-right: 50;
+    font-family: "Arial";
+    font-size: 52px;
+    font-style: italic;
+    color: darkgray;
+    /*font-weight: lighter;*/
+    position: absolute;
+}
+
+#condition, #time {
+    font-style: normal !important;
+    font-weight: bolder !important;
+    color: dimgrey;
+}
+
+#location {
+    width: 314px;
+    margin-top: 40;
+    margin-left: 60;
+    margin-right: 40;
+    font-family: "Arial";
+    font-size: 25px;
+    position: absolute;
+    font-weight: bolder;
+}
+
+#text {
+    font-family: "Arial";
+    font-size: 18px;
+    /*width: 40%;*/
+    margin-left: 300px;
+    margin-right: 300px;
+}
+
+.axis-y{
+    shape-rendering: geometricPrecision;
+    stroke: none;
+}
+
+
+.axis-x{
+    stroke: none;
+    shape-rendering: geometricPrecision;
+}
+
+.line{
+    stroke-width: 2px;
+    stroke: dimgrey;
+    shape-rendering: geometricPrecision;
+    fill: none;
+}
+
+img {
+    width: 30%;
+    height: auto;
+}
