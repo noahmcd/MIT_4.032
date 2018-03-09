@@ -75,13 +75,14 @@ function draw(data){
     //calculates time and value of maximum outdoor conditions
     var cond = "";
 
-    var index = 0;
-    for(var i=1; i<dataHours.length; i++)
-        if(PMV(dataHours[i])>PMV(dataHours[i-1]))
-           index = i;
-   
-    var maxPMV = PMV(dataHours[index]);
-    var maxTime = new Date(dataHours[index]["time"]*1000).getHours();
+    var maxPMV = -1;
+    var maxTime = -1;
+    for(var i=0; i<dataHours.length; i++)
+        if(PMV(dataHours[i])>maxPMV){
+            maxPMV = PMV(dataHours[i]);
+            maxTime = new Date(dataHours[i]["time"]*1000).getHours();
+        }
+           
     if(maxTime>12)
         maxTime-=12;
     
