@@ -7,7 +7,7 @@ var plot = d3.select("#plot1").append('svg')
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom);
 
-//Credit to anon in Piazza for th efollowing section of code
+//Credit to anon in Piazza for the following section of code
 $.ajax({
   url: 'https://api.darksky.net/forecast/4c2574cbcf4dfd15cc2ced1a86941144/42.378369,-71.1829495',
   dataType: 'JSONP',
@@ -72,13 +72,19 @@ function draw(data){
         .attr("class", "line")
         .attr("d", line(dataHours));
     
-    //ccalculates time and value of maximum outdoor conditions
+    //calculates time and value of maximum outdoor conditions
     var cond = "";
-    var maxPMV = d3.max(dataHours,function(d){return PMV(d)});
-    var maxTime = d3.max(dataHours,function(d){return new Date(d.time * 1000).getHours()});
+
+    var index = 0;
+    for(var i=1; i<dataHours.length; i++)
+        if(PMV(dataHours[i])>PMV(dataHours[i-1]))
+           index = i;
+   
+    var maxPMV = PMV(dataHours[index]);
+    var maxTime = new Date(dataHours[index]["time"]*1000).getHours();
     if(maxTime>12)
         maxTime-=12;
-   
+    
     //sets a word value for PMV
     switch(true){
         case maxPMV>400:
@@ -106,11 +112,14 @@ function draw(data){
     
 }
 
+//tests whether a value is in a range [n, m)
 function inRange(num, low, hi){
     if(num>=low && num<hi)
         return true;
 }
-  
+
+//calculates the comfortabbility outside, based on:
+//https://sustainabilityworkshop.autodesk.com/buildings/human-thermal-comfort
 function PMV(data){
     var e = 2.718;
     var M = 115;
@@ -134,6 +143,7 @@ function PMV(data){
 //////////////////
 //    PLOT 2    //
 
+//sets dimensions of svg window
 var margin2 = {top: 100, bottom: 50, left: 20, right: 20};
 var width2 = d3.select('#vis2').node().clientWidth - margin2.right - margin2.left;
 var height2 = d3.select('#vis2').node().clientHeight - margin2.top - margin2.bottom;
@@ -142,34 +152,15 @@ var plot2 = d3.select("#plot2").append('svg')
             .attr("width", width2 + margin2.right + margin2.left)
             .attr("height", height2 + margin2.top + margin2.bottom);
 
-var defs = plot2.append("defs");
-
-/*var linearGradient = defs.append("linearGradient")
-    .attr("id", "linear-gradient");
-
-linearGradient.append("stop")
-   .attr('class', 'start')
-   .attr("offset", "0%")
-   .attr("stop-color", "blue")
-   .attr("stop-opacity", .8);
-
-linearGradient.append("stop")
-   .attr('class', 'end')
-   .attr("offset", "100%")
-   .attr("stop-color", "red")
-   .attr("stop-opacity", .8);
-
-var colorScale = d3.scaleLinear()
-    .domain(d3.extent(dataset, function(d){return d.temp}))
-    .range(d3.extent(linearGradient, function(d){return d}));*/
-
+//creates a scale from blue to red, which is used to assign colors to the visualization
 var RB = d3.interpolateRdBu;
 var colorScale = d3.scaleSequential(RB)
     .domain([100, 0]);
 
+//draw the second visualization
 function draw2(data){
-    //shortens dataset to the next 9 hours
     var dataset = data.responseJSON["hourly"]["data"];
+    //dimensions for grid of 48 circles
     var cellX = width2/4; 
     var cellY = height2/12; 
     
@@ -177,6 +168,7 @@ function draw2(data){
     //var minTemp = d3.min(dataset,function(d){return d.temp});
     var maxPrecip = d3.max(dataset,function(d){return d.precipIntensity});
     
+    //iterates over each hour to display a grid of circles, where radius is dependent on precipitation and color on temperature.
     for(var row=0; row<12; row++)
         for(var col=0; col<4; col++){
             var datum =dataset[col*(row+1)];
