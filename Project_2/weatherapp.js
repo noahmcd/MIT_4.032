@@ -23,13 +23,40 @@ $.ajax({
   }
 }) //end section
 
-
 //draws a graph of outdoor comfort
 function draw(data){
     console.log(data); 
     //shortens dataset to the next 9 hours
     var dataHours = data.responseJSON["hourly"]["data"].slice(0, 8);
        
+    
+    //background color gradient, scaled by temperature
+    var rb = d3.interpolateRdBu;
+    var colorScale = d3.scaleSequential(rb)
+        .domain([90, 0]);
+   
+    var gradient = plot.append("defs")
+        .append("linearGradient")
+        .attr("id", "gradient")
+        .attr("x1", "50%")
+        .attr("y1", "0%")
+        .attr("x2", "50%")
+        .attr("y2", "100%")
+    gradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", colorScale(d3.max(dataHours, function(d){return d.temperature})))
+        .attr("stop-opacity", .5);
+    gradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", colorScale(d3.min(dataHours, function(d){return d.temperature})))
+        .attr("stop-opacity", .5);
+
+    plot.append("rect")
+        .attr("width", width+margin.left+margin.right)
+        .attr("height", height+margin.top+margin.bottom)
+        .style("fill", "url(#gradient)");
+    
+    
     //make scales
     var x = d3.scaleTime()
         .domain(d3.extent(dataHours, function(d){return new Date (d.time * 1000)}))
@@ -56,13 +83,13 @@ function draw(data){
         .attr("class", "axis axis-y")
         .attr("transform", "translate(" + margin.left + "," +  margin.top + ")")
         .call(d3.axisLeft(y).ticks(5))
+    //y axis title
+    plot.append("g")
+        .attr("transform", "translate(" + margin.left + "," +  margin.top + ")")
         .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0-margin.top)
-        .attr("x", 0-height*3/4+margin.left)
-        .attr("dy", "1em")
-        .attr("text-anchor", "middle")
-        .attr("stroke", "black")
+        .attr("class", "graphtitle")
+        .attr("y", height/2-margin.top/2)
+        .attr("x", 0)
         .text("Outdoor Comfort (PMV)");
     
     //data path
@@ -80,12 +107,10 @@ function draw(data){
     for(var i=0; i<dataHours.length; i++)
         if(PMV(dataHours[i])>maxPMV){
             maxPMV = PMV(dataHours[i]);
-            maxTime = new Date(dataHours[i]["time"]*1000).getHours();
+            maxTime = new Date(dataHours[i]["time"]*1000);
         }
            
-    if(maxTime>12)
-        maxTime-=12;
-    
+   
     //sets a word value for PMV
     switch(true){
         case maxPMV>400:
@@ -107,10 +132,10 @@ function draw(data){
         .append("text")
         .text(cond);
     
+    var formatTime = d3.timeFormat("%I %p");
     d3.select("#time")
         .append("text")
-        .text(maxTime);
-    
+        .text(formatTime(maxTime));
 }
 
 //tests whether a value is in a range [n, m)
@@ -155,7 +180,7 @@ var plot2 = d3.select("#plot2").append('svg')
 
 //creates a scale from blue to red, which is used to assign colors to the visualization
 var RB = d3.interpolateRdBu;
-var colorScale = d3.scaleSequential(RB)
+var colorScale2 = d3.scaleSequential(RB)
     .domain([100, 0]);
 
 //draw the second visualization
@@ -163,22 +188,103 @@ function draw2(data){
     var dataset = data.responseJSON["hourly"]["data"];
     //dimensions for grid of 48 circles
     var cellX = width2/4; 
-    var cellY = height2/12; 
+    var cellY = (height2-40)/12; 
     
     //var maxTemp = d3.max(dataset,function(d){return d.temp});
     //var minTemp = d3.min(dataset,function(d){return d.temp});
     var maxPrecip = d3.max(dataset,function(d){return d.precipIntensity});
+    var maxWind = d3.max(dataset,function(d){return d.windSpeed});
     
     //iterates over each hour to display a grid of circles, where radius is dependent on precipitation and color on temperature.
     for(var row=0; row<12; row++)
         for(var col=0; col<4; col++){
             var datum =dataset[col*(row+1)];
             console.log(datum.tempertature);
-            plot2.append("circle")
+            var cx = (col*cellX)+cellX/2+15;
+            var cy = (row*cellY)+cellY/2+100;
+            plot2.append("ellipse")
                 .attr("transform", "translate(" + margin2.left + "," +  margin2.top + ")")
-                .attr("cx", (col*cellX)+cellX/2)
-                .attr("cy", (row*cellY)+cellY/2)
-                .attr("r", .2*cellY*(1+datum.precipIntensity/maxPrecip))
-                .attr("fill", colorScale(datum.temperature));
+                .attr("cx", cx)
+                .attr("cy", cy)
+                .attr("transform", "rotate("+(datum.windBearing-90)+","+cx+","+cy+")")
+                .attr("rx", .25*cellY*(1+datum.precipIntensity/maxPrecip))
+                .attr("ry", .25*cellY*(1+datum.windSpeed/maxWind))
+                .attr("fill", colorScale2(datum.temperature))
+                .attr("stroke", "black")
+                .attr("stroke-width", ".5");
         }
+    
+    //wind speed key
+    plot2.append("g")
+        .append("text")
+        .attr("x", width2/4)
+        .attr("y", height2+margin2.top)
+        .text("Wind");
+    plot2.append("line")
+        .attr("x1", width2/4+10)
+        .attr("y1", 720)
+        .attr("x2", width2/4+30)
+        .attr("y2", 695)
+        .attr("stroke", "black");
+    plot2.append("line")
+        .attr("x1", width2/4+20)
+        .attr("y1", 696)
+        .attr("x2", width2/4+30)
+        .attr("y2", 695)
+        .attr("stroke", "black");
+    plot2.append("line")
+        .attr("x1", width2/4+30)
+        .attr("y1", 705)
+        .attr("x2", width2/4+30)
+        .attr("y2", 695)
+        .attr("stroke", "black");
+    
+    //temperature key
+    var gradient2 = plot2.append("defs")
+        .append("linearGradient")
+        .attr("id", "gradient2")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "100%")
+        .attr("y2", "0%");
+    gradient2.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", colorScale2(0))
+        .attr("stop-opacity", 1);
+    gradient2.append("stop")
+        .attr("offset", "25%")
+        .attr("stop-color", colorScale2(25))
+        .attr("stop-opacity", 1);
+    gradient2.append("stop")
+        .attr("offset", "75%")
+        .attr("stop-color", colorScale2(75))
+        .attr("stop-opacity", 1);
+    gradient2.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", colorScale2(100))
+        .attr("stop-opacity", 1);
+    
+    plot2.append("g")
+        .append("text")
+        .attr("x", width2*3/4-margin2.left-margin2.right)
+        .attr("y", height2+margin2.top)
+        .text("Temperature");
+    plot2.append("g")
+        .append("text")
+        .attr("x", width2/2+10)
+        .attr("y", height2+margin2.top+20)
+        .text("0");
+    plot2.append("g")
+        .append("text")
+        .attr("x", width2*3/4+85)
+        .attr("y", height2+margin2.top+20)
+        .text("100");
+    plot2.append("rect")
+        .attr("x", width2/2+25)
+        .attr("y", height2+margin2.top+10)
+        .attr("rx", 10)
+        .attr("ry", 10)
+        .attr("width", 150)
+        .attr("height", 10)
+        .style("fill", "url(#gradient2)");  
 }

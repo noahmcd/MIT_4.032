@@ -1,15 +1,17 @@
+body {
+    font-family: 'Raleway', sans-serif;
+}
+
 h1 {
     padding: 20px;
-    font-family: 'Arial';
     font-size: 30px;
 }
 
 h2 {
-    padding-left: 300px;
-    font-family: 'Arial';
+    width: 600px;
     font-size: 20px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 10px;
+    margin: auto;
 }
 
 #vis1,#vis2 {
@@ -23,20 +25,19 @@ h2 {
 }
 
 #plot1 {
-    background-color: antiquewhite;
+    /*background-color: antiquewhite;*/
 }
 
 #plot2 {
-    background-color: white;
+    background-color: #b3b3b5;
 }
 
 #desc {
-    width: 300px;
+    width: 320px;
     margin-top: 50;
-    margin-left: 50;
-    margin-right: 50;
-    font-family: "Arial";
-    font-size: 52px;
+    margin-left: 60;
+    margin-right: 30;
+    font-size: 46px;
     font-style: italic;
     color: darkgray;
     /*font-weight: lighter;*/
@@ -50,22 +51,23 @@ h2 {
 }
 
 #location {
-    width: 314px;
-    margin-top: 40;
-    margin-left: 60;
-    margin-right: 40;
-    font-family: "Arial";
-    font-size: 25px;
+    width: 250px;
+    margin-top: 20;
+    margin-left: 82;
+    margin-right: 82;
+    text-align: center;
+    font-size: 28px;
     position: absolute;
     font-weight: bolder;
+    color: dimgray;
 }
 
 #text {
-    font-family: "Arial";
     font-size: 18px;
-    /*width: 40%;*/
-    margin-left: 300px;
-    margin-right: 300px;
+    width: 600px;
+    margin: auto;
+    /*margin-left: 300px;
+    margin-right: 300px;*/
 }
 
 .axis-y{
@@ -84,6 +86,11 @@ h2 {
     stroke: dimgrey;
     shape-rendering: geometricPrecision;
     fill: none;
+}
+
+.graphtitle{
+    font-family: 'Raleway', sans-serif;
+    font-size: 20px;
 }
 
 img {
